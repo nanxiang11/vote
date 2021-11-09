@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nx.longtm.dao.LoginDao">
+    <select id="login" resultType="LoginBean">
+        select * from `user` where studentName=#{studentName} and studentPassword=#{studentPassword}
+    </select>
+
+    <select id="queryalluser" resultType="User">
+        select * from `user` where `user`.aboutme != ""
+    </select>
+
+    <update id="setadminuser">
+        update `user` set `user`.select=#{select} where `user`.id=#{id}
+    </update>
+
+
+
+    <insert id="post">
+        INSERT INTO `user` VALUES (null, #{studentName}, #{studentPassword}, #{studentEmail}, #{imgurl}, null, #{college}, "0", #{post_time})
+    </insert>
+
+    <update id="edituser">
+        update user set aboutme=#{aboutme} where id=#{id}
+    </update>
+
+    <select id="queryUserTP" resultType="UserTP">
+        select tpactive.activename as activename,
+               tpactive.id as active_id, person_ac.choose as choose,
+               person_ac.post_time as post_time from tpactive, person_ac where person_ac.user_id = #{id}
+    </select>
+</mapper>

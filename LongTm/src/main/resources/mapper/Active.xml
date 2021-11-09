@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nx.longtm.dao.Tpactive">
+    <insert id="addactive">
+        INSERT INTO `tpactive` VALUES (null, #{userid}, #{email}, #{activename}, #{activedes}, #{imgurl}, #{choose}, #{domains}, #{post_time}, 0, #{endtime})
+    </insert>
+
+    <select id="queryId" resultMap="userResult">
+        select user.id as id,
+               user.studentName as studentName,
+               tpactive.id as tpactive_id,
+               tpactive.userid as userid,
+               tpactive.email as email,
+               tpactive.activename as activename,
+               tpactive.activedes as activedes,
+               tpactive.imgurl as imgurl,
+               tpactive.choose as choose,
+               tpactive.domains as domains,
+               tpactive.post_time as post_time,
+               tpactive.mange as mange
+               from user join tpactive on user.id = tpactive.userid where tpactive.id=#{id}
+    </select>
+    
+    <resultMap id="userResult" type="UserA">
+        <id property="id" column="userid" />
+        <result property="studentName" column="studentName" />
+        <association property="active" javaType="Active">
+            <id property="id" column="tpactive_id" />
+            <result property="userid" column="userid" />
+            <result property="email" column="email" />
+            <result property="activename" column="activename" />
+            <result property="activedes" column="activedes" />
+            <result property="choose" column="choose" />
+            <result property="choose" column="choose" />
+            <result property="domains" column="domains" />
+            <result property="post_time" column="post_time" />
+            <result property="mange" column="mange" />
+        </association>
+    </resultMap>
+
+    <select id="queryAll" resultType="UserA2">
+        select user.id as userid,
+               user.studentName as studentName,
+               tpactive.id as id,
+               tpactive.userid as userid,
+               tpactive.email as email,
+               tpactive.activename as activename,
+               tpactive.activedes as activedes,
+               tpactive.imgurl as imgurl,
+               tpactive.choose as choose,
+               tpactive.domains as domains,
+               tpactive.post_time as post_time,
+               tpactive.mange as mange,
+                tpactive.endtime as endtime
+        from user, tpactive where user.id = tpactive.userid order by tpactive.post_time desc
+    </select>
+
+    <select id="queryAll2" resultType="UserA2">
+        select user.id as userid,
+               user.studentName as studentName,
+               tpactive.id as id,
+               tpactive.userid as userid,
+               tpactive.email as email,
+               tpactive.activename as activename,
+               tpactive.activedes as activedes,
+               tpactive.imgurl as imgurl,
+               tpactive.choose as choose,
+               tpactive.domains as domains,
+               tpactive.post_time as post_time,
+               tpactive.mange as mange,
+               tpactive.endtime as endtime
+        from user, tpactive where user.id = tpactive.userid and tpactive.mange = "0"
+    </select>
+
+    <update id="editId">
+        update tpactive set domains=#{domains} where id=#{id}
+    </update>
+
+    <insert id="addPerson_AC">
+        INSERT INTO `person_ac` VALUES (null, #{user_id}, #{active_id}, #{choose}, #{post_time})
+    </insert>
+
+    <select id="queryTPU" resultType="TPresult">
+        select user.studentName as studentName,
+               person_ac.post_time as post_time,
+               tpactive.choose as choose from user, person_ac,tpactive where person_ac.active_id=#{active_id} and person_ac.user_id=`user`.id and person_ac.active_id=tpactive.id GROUP BY person_ac.user_id
+    </select>
+
+    <update id="adminactive">
+        update tpactive set mange=1 where id=#{id}
+    </update>
+
+    <select id="getnameactive" resultType="Active">
+        select * from tpactive where tpactive.activename like "%" #{name} "%"
+    </select>
+
+</mapper>

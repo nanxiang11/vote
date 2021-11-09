@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nx.longtm.dao.StudentDao">
+    <select id="queryall" resultType="StudentsBean">
+        select * from students
+    </select>
+
+    <insert id="add">
+        INSERT INTO `students` VALUES (null, #{name}, "null" , #{sex}, #{tel}, #{address}, #{nclass}, #{post_time})
+    </insert>
+
+    <delete id="del">
+        delete from students where id=#{id}
+    </delete>
+
+    <update id="edit">
+        update students set name=#{name}, sex=#{sex}, tel=#{tel}, address=#{address}, nclass=#{nclass} where id=#{id}
+    </update>
+
+    <select id="queryadmin" resultType="String">
+        select id from students where students.name=#{name}
+    </select>
+
+</mapper>
